@@ -3,6 +3,26 @@ import torch
 import torchaudio
 from torchaudio import transforms
 from IPython.display import Audio
+import pandas as pd
+from pathlib import Path
+
+def read_metadata():
+
+  download_path = Path.cwd()/'UrbanSound8K'
+
+  # Read metadata file
+  metadata_file = download_path/'metadata'/'UrbanSound8K.csv'
+  df = pd.read_csv(metadata_file)
+  df.head()
+
+  # Construct file path by concatenating fold and file name
+  df['relative_path'] = '/fold' + df['fold'].astype(str) + '/' + df['slice_file_name'].astype(str)
+
+  # Take relevant columns
+  df = df[['relative_path', 'classID']]
+  df.head()
+  return df
+
 
 class AudioUtil():
 
@@ -83,10 +103,7 @@ class AudioUtil():
       
     return (sig, sr)
 
-  # ----------------------------
-  # Shifts the signal to the left or right by some percent. Values at the end
-  # are 'wrapped around' to the start of the transformed signal.
-  # ----------------------------
+
   @staticmethod
   def time_shift(aud, shift_limit):
     """
@@ -114,12 +131,7 @@ class AudioUtil():
     return (spec)
 
 
-  # ----------------------------
-  # Augment the Spectrogram by masking out some sections of it in both the frequency
-  # dimension (ie. horizontal bars) and the time dimension (vertical bars) to prevent
-  # overfitting and to help the model generalise better. The masked sections are
-  # replaced with the mean value.
-  # ----------------------------
+
   @staticmethod
   def spectro_augment(spec, max_mask_pct=0.1, n_freq_masks=1, n_time_masks=1):
     """
