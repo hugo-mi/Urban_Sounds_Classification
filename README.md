@@ -3,33 +3,73 @@ Classification of boat sounds audio using deep learning
 
 ## Database
 
-This contribution presents a database of underwater sounds produced by vessels of various types. Besides sound recordings, the database contains details of the conditions for obtaining each recording: type of vessel, location of the recording equipment, weather conditions, etc. For its realization, a methodology for recording sounds and gathering additional information has been established, that will facilitate its use to the research community, and expanding the number of records in the database in the future.
+**Description**
+-----------
 
-The sounds are recorded in shallow waters and in real conditions. Therefore, the recordings contain both natural and anthropogenic environment noise. It aims to provide a database of real sounds that researchers can use, for example, to train boat detectors and classifiers, usable in monitoring maritime traffic.
+This dataset contains 8732 labeled sound excerpts (<=4s) of urban sounds from 10 classes: `air_conditioner`, `car_horn`, 
+`children_playing`, `dog_bark`, `drilling`, `engine_idling`, `gun_shot`, `jackhammer`, `siren`, and `street_music`. The classes are 
+drawn from the urban sound taxonomy described in the following article, which also includes a detailed description of 
+the dataset and how it was compiled:
 
-### Database field description
+J. Salamon, C. Jacoby and J. P. Bello, "A Dataset and Taxonomy for Urban Sound Research", 
+22nd ACM International Conference on Multimedia, Orlando USA, Nov. 2014.
 
-| **Field**                            | **Description**                                                                                                                                                                                                                                              |
-|--------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `id`                                 | A unique identifier for each record.                                                                                                                                                                                                                         |
-| `name`                               | The name of the recording. Usually it is a ship name, except for records containing recordings of unknown ships or records of ambient noise.                                                                                                                 |
-| `type`                               | Boat category.                                                                                                                                                                                                                                               |
-| `pic`                                | Link to a picture of the boat.                                                                                                                                                                                                                               |
-| `location`                           | GPS position of the recording equipment shown in a Google map.                                                                                                                                                                                               |
-| `date`                               | Time and date of the recording. The format is YYYY-MM-DD HH:MM:SS. If no precise information is available, the registered time is 00:00:00.                                                                                                                 |
-| `H_G_D`                              | Hydrophone-Gain-Depth. This field contains three sets of one to three figures each, related to the hydrophones used for the recording. The first vector indicates the numbers of the hydrophones, the second the gains and the third the heights measured from the sea bottom (p1, p2, p3 in Fig. 1). For instance, a value `H_G_D = (1, 2) (16, 32) (5, 7.5)` means that hydrophones 1 and 2 were used for the recording, with gains x16 and x32, and at distances of 5m and 7.5m from the bottom. |
-| `audio`                              | Link to download the audio file, and a streaming player to listen to the recording.                                                                                                                                                                           |
-| `video`                              | Indicates if there is a video documenting the recording.                                                                                                                                                                                                     |
-| `channelDepth`                       | Sea depth (m) at the hydrophone position (c in Fig. 1).                                                                                                                                                                                                      |
-| `wind`                               | Wind speed (km/h) measured in-situ.                                                                                                                                                                                                                          |
-| `ais link`                           | Link to the AIS (Automatic Identification System) of the vessel, when available.                                                                                                                                                                              |
-| `distance`                           | Approximate distance between the vessel recorded and the vertical of the hydrophone (d in Fig. 1). There are four intervals of approximation (except where the exact distance is known): <50m, 50-100m, 100-150m, >150m.                                     |
-| `atmospheric and oceanographic data` | Information taken from the meteorological stations with information on temperature, humidity, wind speed, and rain.                                                                                                                                           |
-| `notes`                              | Information obtained during recording, or from the video file, not contained elsewhere.                                                                                                                                                                       |
-| `duration`                           | Duration in minutes:seconds of the audio clip.                                                                                                                                                                                                                |
+All excerpts are taken from field recordings uploaded to www.freesound.org. The files are pre-sorted into ten folds
+(folders named fold1-fold10) to help in the reproduction of and comparison with the automatic classification results
+reported in the article above.
 
-> Universidad de Vigo, Telecomunications faculty. Campus Universitario Lagoas-Marcosende, 36310 VIGO (Pontevedra)
-©Uvigo-Sonitum 2016 | Contact: dsantos(at)gts.uvigo.es
+In addition to the sound excerpts, a CSV file containing metadata about each excerpt is also provided.
 
-**Online Database:**
-https://underwaternoise.atlanttic.uvigo.es/indexDB.php
+
+**Audio Files Included**
+--------------------
+
+8732 audio files of urban sounds (see description above) in WAV format. The sampling rate, bit depth, and number of 
+channels are the same as those of the original file uploaded to Freesound (and hence may vary from file to file).
+
+
+**Meta-data Files Included**
+
+
+`UrbanSound8k.csv`
+
+This file contains meta-data information about every audio file in the dataset. This includes:
+
+* slice_file_name: 
+The name of the audio file. The name takes the following format: [fsID]-[classID]-[occurrenceID]-[sliceID].wav, where:
+  * [fsID] = the Freesound ID of the recording from which this excerpt (slice) is taken
+  * [classID] = a numeric identifier of the sound class (see description of classID below for further details)
+  * [occurrenceID] = a numeric identifier to distinguish different occurrences of the sound within the original recording
+  * [sliceID] = a numeric identifier to distinguish different slices taken from the same occurrence
+
+* fsID:
+The Freesound ID of the recording from which this excerpt (slice) is taken
+
+* start
+The start time of the slice in the original Freesound recording
+
+* end:
+The end time of slice in the original Freesound recording
+
+* salience:
+A (subjective) salience rating of the sound. 1 = foreground, 2 = background.
+
+* fold:
+The fold number (1-10) to which this file has been allocated.
+
+* classID:
+A numeric identifier of the sound class:
+0 = air_conditioner
+1 = car_horn
+2 = children_playing
+3 = dog_bark
+4 = drilling
+5 = engine_idling
+6 = gun_shot
+7 = jackhammer
+8 = siren
+9 = street_music
+
+* class:
+The class name: air_conditioner, car_horn, children_playing, dog_bark, drilling, engine_idling, gun_shot, jackhammer, 
+siren, street_music.
