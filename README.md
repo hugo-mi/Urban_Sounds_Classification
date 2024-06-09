@@ -78,6 +78,33 @@ A numeric identifier of the sound class:
 The class name: air_conditioner, car_horn, children_playing, dog_bark, drilling, engine_idling, gun_shot, jackhammer, 
 siren, street_music.
 
+## Data Exploration
+
+### Audio Statistics
+
+|       fsID      |    start    |     end     |  salience  |   fold   |  classID  |  length  |   bitrate   | channels | sample_rate | bits_per_sample |
+|:---------------:|:-----------:|:-----------:|:----------:|:--------:|:---------:|:--------:|:-----------:|:--------:|:-----------:|:---------------:|
+| count           | 2000.000000 | 2000.000000 | 2000.000000 | 2000.000 | 2000.000000 | 2000.00000 | 2000.000000 | 2000.000000 | 2000.000000 | 2000.000000 |
+| mean            | 115516.149000 | 34.462350 | 38.150132 | 1.265000 | 5.387000 | 4.75700 | 3.687096 | 1.758314e+06 | 1.908500 | 48986.350000 | 18.480000 |
+| std             | 29434.261664 | 69.599955 | 69.692708 | 0.441444 | 2.820498 | 2.83319 | 0.881551 | 8.093881e+05 | 0.288391 | 14081.103736 | 3.803266 |
+| min             | 11722.000000 | 0.000000 | 0.261224 | 1.000000 | 1.000000 | 0.00000 | 0.190000 | 2.560000e+05 | 1.000000 | 16000.000000 | 8.000000 |
+| 25%             | 105029.000000 | 3.500000 | 7.306557 | 1.000000 | 3.000000 | 3.00000 | 4.000000 | 1.411200e+06 | 2.000000 | 44100.000000 | 16.000000 |
+| 50%             | 118278.000000 | 10.000000 | 13.994276 | 1.000000 | 5.000000 | 5.00000 | 4.000000 | 1.411200e+06 | 2.000000 | 44100.000000 | 16.000000 |
+| 75%             | 135160.000000 | 31.133479 | 34.551082 | 2.000000 | 8.000000 | 7.00000 | 4.000000 | 2.116800e+06 | 2.000000 | 48000.000000 | 24.000000 |
+| max             | 147926.000000 | 534.628805 | 538.628805 | 2.000000 | 10.000000 | 9.00000 | 4.000000 | 4.608000e+06 | 2.000000 | 96000.000000 | 24.000000 |
+
+### Labels Distribution
+![](https://github.com/hugo-mi/Urban_Sounds_Classification/blob/main/img/labels.png)
+
+### Waveplots
+![](https://github.com/hugo-mi/Urban_Sounds_Classification/blob/main/img/waveplots.png)
+
+### Mel-Spectogram
+![](https://github.com/hugo-mi/Urban_Sounds_Classification/blob/main/img/Mel_spectograms.png)
+
+### MFCC
+![](https://github.com/hugo-mi/Urban_Sounds_Classification/blob/main/img/MFFC.png)
+
 ## Results
 
 The trained a end-to-end model achieves high accuracy in classifying urban sounds. The performance is validated on a separate test set, with metrics like precision, recall, and F1-score demonstrating the model's reliability and effectiveness. The model shows good overall performance with an accuracy of 82%, which is quite acceptable for urban sound classification given the diverse nature of the sounds. `Jackhammer` and `gun_shot` classes have a high recall, which is beneficial as these sounds could be critical in urban monitoring systems. The confusion matrix indicates that certain sound classes are more likely to be confused with others (e.g., `engine_idling` with `drilling`), suggesting that these classes have similar acoustic features.  `Children Playing` is often confused with `Dog Bark` and vice versa, suggesting that these sounds have overlapping acoustic features. We observe the same phenomenom for `Engine Idling` and `Drilling` show notable misclassification between each other, likely due to similar sound patterns.
