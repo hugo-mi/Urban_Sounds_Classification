@@ -77,3 +77,13 @@ A numeric identifier of the sound class:
 * class:
 The class name: air_conditioner, car_horn, children_playing, dog_bark, drilling, engine_idling, gun_shot, jackhammer, 
 siren, street_music.
+
+## Results
+
+The trained a end-to-end model achieves high accuracy in classifying urban sounds. The performance is validated on a separate test set, with metrics like precision, recall, and F1-score demonstrating the model's reliability and effectiveness. The model shows good overall performance with an accuracy of 82%, which is quite acceptable for urban sound classification given the diverse nature of the sounds. `Jackhammer` and `gun_shot` classes have a high recall, which is beneficial as these sounds could be critical in urban monitoring systems. The confusion matrix indicates that certain sound classes are more likely to be confused with others (e.g., `engine_idling` with `drilling`), suggesting that these classes have similar acoustic features.  `Children Playing` is often confused with `Dog Bark` and vice versa, suggesting that these sounds have overlapping acoustic features. We observe the same phenomenom for `Engine Idling` and `Drilling` show notable misclassification between each other, likely due to similar sound patterns.
+
+![](https://github.com/hugo-mi/Urban_Sounds_Classification/blob/main/img/train_test.jpg)
+
+![](https://github.com/hugo-mi/Urban_Sounds_Classification/blob/main/img/class_report.jpg)
+
+![](https://github.com/hugo-mi/Urban_Sounds_Classification/blob/main/img/matrix_conf.jpg)
