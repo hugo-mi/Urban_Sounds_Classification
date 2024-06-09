@@ -1,52 +1,63 @@
-#%% IMPORT LIBS
+!pip install mutagen
+!pip install torchaudio
+import os
+import pandas as pd
+import mutagen
+import mutagen.wave
+import librosa.display
+import matplotlib.pyplot as plt
+import numpy as np
+from pathlib import Path
+from google.colab import drive
+drive.mount('/content/drive')
 import torch
 from torch.utils.data import random_split
-
-from audio_utils import read_metadata
 from genereate_dataset import SoundDS
 from build_model import AudioClassifier
 from predict_model import inference
 from device import check_device
 
 
-#%% IMPORT AUDIO
-df = read_metadata()
+def read_metadata():
+    download_path = Path('/content/drive/My Drive/UrbanSound8K')
 
+  
+    metadata_file = download_path / 'metadata' / 'UrbanSound8K.csv'
+    try:
+        df = pd.read_csv(metadata_file)
+        print(df.head())  
+
+    
+        df['relative_path'] = '/fold' + df['fold'].astype(str) + '/' + df['slice_file_name'].astype(str)
+ 
+        df = df[['relative_path', 'classID']]
+        print(df.head())  
+        return df
+    except FileNotFoundError:
+        print("Metadata file not found. Please check the path and try again.")
+        return None
+    return df
+
+df = read_metadata()
+ 
 
 #%% DEVICE CHECK
 check_device()
 
+myds = SoundDS(df, '/content/drive/My Drive/UrbanSound8K/audio')
 
-#%% AUDIO DATAPROCESSING
-
-myds = SoundDS(df, data_path)
-
-#%% SPLIT DATA INTO TRAIN AND TEST SET
-
-# Random split of 80:20 between training and validation
 num_items = len(myds)
+
 num_train = round(num_items * 0.8)
 num_val = num_items - num_train
 train_ds, val_ds = random_split(myds, [num_train, num_val])
-
-# Create training and validation data loaders
-train_dl = torch.utils.data.DataLoader(train_ds, batch_size=16, shuffle=True)
+rain_dl = torch.utils.data.DataLoader(train_ds, batch_size=16, shuffle=True)
 val_dl = torch.utils.data.DataLoader(val_ds, batch_size=16, shuffle=False)
 
-#%% BUILD MODEL
-
-# Create the model and put it on the GPU if available
 myModel = AudioClassifier()
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 myModel = myModel.to(device)
 # Check that it is on Cuda
 next(myModel.parameters()).device
 
-#%% TRAIN MODEL
-
-#%% MODEL INFERENCE
-
-# Run inference on trained model with the validation set
 inference(myModel, val_dl)
-
-#%% EVALUATE MODEL
