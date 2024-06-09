@@ -20,6 +20,10 @@ reported in the article above.
 
 In addition to the sound excerpts, a CSV file containing metadata about each excerpt is also provided.
 
+Link to the database;
+[Link Text](https://urbansounddataset.weebly.com/urbansound8k.html)
+
+
 
 **Audio Files Included**
 --------------------
