@@ -56,7 +56,7 @@ myModel = AudioClassifier()
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 myModel = myModel.to(device)
 #%%
-training(myModel, train_dl, 20)
+training(myModel, train_dl, 35)
 # Check that it is on Cuda
 next(myModel.parameters()).device
 

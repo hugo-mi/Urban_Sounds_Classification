@@ -2,7 +2,6 @@ import torch.nn as nn
 import torch
 from device import device
 
-
 # ----------------------------
 # Training Loop
 # ----------------------------
