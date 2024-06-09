@@ -1,69 +1,41 @@
+import torch
 import torch.nn as nn
-from torch.nn import init
+import torch.nn.init as init
 
-# ----------------------------
-# Audio Classification Model
-# ----------------------------
-class AudioClassifier (nn.Module):
-    # ----------------------------
-    # Build the model architecture
-    # ----------------------------
-    def __init__(self):
-        super().__init__()
-        conv_layers = []
+class AudioClassifier(nn.Module):
+    def __init__(self, num_classes=10, init_gain=0.1):
+        super(AudioClassifier, self).__init__()
 
-        # First Convolution Block with Relu and Batch Norm. Use Kaiming Initialization
-        self.conv1 = nn.Conv2d(2, 8, kernel_size=(5, 5), stride=(2, 2), padding=(2, 2))
-        self.relu1 = nn.ReLU()
-        self.bn1 = nn.BatchNorm2d(8)
-        init.kaiming_normal_(self.conv1.weight, a=0.1)
-        self.conv1.bias.data.zero_()
-        conv_layers += [self.conv1, self.relu1, self.bn1]
+        channels = [2, 8, 16, 32, 64]  # Channel sizes for each convolutional layer
+        self.conv_layers = nn.Sequential()
 
-        # Second Convolution Block
-        self.conv2 = nn.Conv2d(8, 16, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
-        self.relu2 = nn.ReLU()
-        self.bn2 = nn.BatchNorm2d(16)
-        init.kaiming_normal_(self.conv2.weight, a=0.1)
-        self.conv2.bias.data.zero_()
-        conv_layers += [self.conv2, self.relu2, self.bn2]
+        # Create multiple convolutional blocks with ReLU, Batch Normalization, and Dropout
+        for i in range(1, len(channels)):
+            # Define the convolution layer
+            conv = nn.Conv2d(channels[i-1], channels[i], kernel_size=3, stride=2, padding=1)
+            relu = nn.ReLU()
+            bn = nn.BatchNorm2d(channels[i])
+            dropout = nn.Dropout(p=0.25)  # Dropout layer to reduce overfitting
 
-        # Second Convolution Block
-        self.conv3 = nn.Conv2d(16, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
-        self.relu3 = nn.ReLU()
-        self.bn3 = nn.BatchNorm2d(32)
-        init.kaiming_normal_(self.conv3.weight, a=0.1)
-        self.conv3.bias.data.zero_()
-        conv_layers += [self.conv3, self.relu3, self.bn3]
+            # Initialize convolutional layers using Kaiming He initialization
+            init.kaiming_normal_(conv.weight, nonlinearity='relu', a=init_gain)
+            conv.bias.data.zero_()
 
-        # Second Convolution Block
-        self.conv4 = nn.Conv2d(32, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
-        self.relu4 = nn.ReLU()
-        self.bn4 = nn.BatchNorm2d(64)
-        init.kaiming_normal_(self.conv4.weight, a=0.1)
-        self.conv4.bias.data.zero_()
-        conv_layers += [self.conv4, self.relu4, self.bn4]
+            # Naming layers for clarity
+            layer_name = f"conv_block_{i}"
+            self.conv_layers.add_module(f"{layer_name}_conv", conv)
+            self.conv_layers.add_module(f"{layer_name}_relu", relu)
+            self.conv_layers.add_module(f"{layer_name}_bn", bn)
+            self.conv_layers.add_module(f"{layer_name}_dropout", dropout)
 
-        # Linear Classifier
-        self.ap = nn.AdaptiveAvgPool2d(output_size=1)
-        self.lin = nn.Linear(in_features=64, out_features=10)
+        # Adaptive pooling and linear classifier
+        self.ap = nn.AdaptiveAvgPool2d(output_size=(1, 1))
+        self.fc = nn.Linear(channels[-1], num_classes)
 
-        # Wrap the Convolutional Blocks
-        self.conv = nn.Sequential(*conv_layers)
- 
-    # ----------------------------
-    # Forward pass computations
-    # ----------------------------
     def forward(self, x):
-        # Run the convolutional blocks
-        x = self.conv(x)
-
-        # Adaptive pool and flatten for input to linear layer
-        x = self.ap(x)
-        x = x.view(x.shape[0], -1)
-
-        # Linear layer
-        x = self.lin(x)
-
-        # Final output
+        x = self.conv_layers(x)       # Pass through convolutional layers
+        x = self.ap(x)                 # Adaptive average pooling
+        x = x.view(x.size(0), -1)      # Flatten the output for the linear layer
+        x = self.fc(x)                 # Final classification layer
         return x
+
