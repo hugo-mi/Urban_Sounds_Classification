@@ -114,3 +114,12 @@ The trained a end-to-end model achieves high accuracy in classifying urban sound
 ![](https://github.com/hugo-mi/Urban_Sounds_Classification/blob/main/img/class_report.jpg)
 
 ![](https://github.com/hugo-mi/Urban_Sounds_Classification/blob/main/img/matrix_conf.jpg)
+
+
+### Bibliography
+
+* Huimei Han a b, Ying Li a, Xingquan Zhu b _Convolutional neural network learning for generic data classification_ **(2021)** [[link](https://www.sciencedirect.com/science/article/abs/pii/S0020025518308703)]
+      
+* Karol J. Piczak _ENVIRONMENTAL SOUND CLASSIFICATION WITH CONVOLUTIONAL NEURAL NETWORKS_ **(2015)** [[link](https://www.karolpiczak.com/papers/Piczak2015-ESC-ConvNet.pdf)]
+
+* Aditya Khamparia et al. _Sound Classification Using Convolutional Neural Network and Tensor Deep Stacking Network_ **(2019)** [[link](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8605515)]
