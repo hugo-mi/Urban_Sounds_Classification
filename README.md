@@ -1,6 +1,9 @@
 # Urban_Sounds_Classification
 Classification of urban sounds audio using deep learning
 
+![image](https://github.com/user-attachments/assets/2c35e84e-ef02-4b62-86d6-5c64f8aae764)
+
+
 ## Database
 
 **Description**
