@@ -1,13 +1,11 @@
 # Urban_Sounds_Classification
 Classification of urban sounds audio using deep learning
 
+## Overview (Poster)
 ![image](https://github.com/user-attachments/assets/2c35e84e-ef02-4b62-86d6-5c64f8aae764)
 
 
 ## Database
-
-**Description**
------------
 
 This dataset contains 8732 labeled sound excerpts (<=4s) of urban sounds from 10 classes: `air_conditioner`, `car_horn`, 
 `children_playing`, `dog_bark`, `drilling`, `engine_idling`, `gun_shot`, `jackhammer`, `siren`, and `street_music`. The classes are 
